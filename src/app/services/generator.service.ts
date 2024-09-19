@@ -7,18 +7,19 @@ export class GeneratorService {
 
   private password: string = '';
 
-  constructor() {
-  }
+  constructor() { }
 
-  protected generate(length: number): string {
+  public generate(length: number): string {
+    this.password = '';
     for (let i: number = 0; i < length; i++) {
       this.password += this.getChar();
     }
+    console.log(`Generated password: ${this.password}`);
     return this.password;
   }
 
   private getChar(): any {
-    let type_index: number = Math.floor(Math.random() * 3);
+    let type_index: number = Math.floor(Math.random() * 4);
     switch (type_index) {
       case 0:
         return this.getRandomNumber();
