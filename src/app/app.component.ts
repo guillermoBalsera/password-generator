@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {GeneratorService} from "./services/generator.service";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'passwordGenerator';
+  public password: string = 'passwordGenerator';
+
+  constructor(private generator: GeneratorService) {
+  }
+
+  public callGenerator(): void {
+
+  }
+
 }
