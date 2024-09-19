@@ -10,6 +10,7 @@ import {ClipboardService} from "./services/clipboard/clipboard.service";
 export class AppComponent implements OnInit {
 
   public passwordLength: number = 10;
+  public showPassword: boolean = true;
   public password: string = 'passwordGenerator';
 
   constructor(private generator: GeneratorService, protected clipboard: ClipboardService) { }
@@ -24,6 +25,10 @@ export class AppComponent implements OnInit {
 
   formatLabel(value: number): string {
     return `${value}`;
+  }
+
+  generateHiddenPassword(): string {
+    return '*'.repeat(Math.floor(this.password.length));
   }
 
 }

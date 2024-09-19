@@ -11,9 +11,19 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  max-width: 40vw;
-  min-width: 20vw;
+  width: 60vw;
+  min-width: 40vw;
   min-height: 30vh;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  align-content: space-around;
+  width: 35%;
 }
 
 mat-slider {
