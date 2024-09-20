@@ -1,6 +1,15 @@
 <div class="card break-all">
   <!-- #4F46e5 -->
-    <p class="password"> {{ password }} </p>
+  <h1 class="text-4xl text-center text-gray-800 mt-6 mb-4">
+    Generador de contraseñas
+  </h1>
+  <p class="password">
+    @if (charging) {
+      <span class="loader"></span>
+    } @else {
+      {{ password }}
+    }
+  </p>
   <mat-slider min="20" [color]="" max="1000" step="10" discrete [displayWith]="formatLabel" style="color: #4F46E5;">
     <input matSliderThumb [(ngModel)]="passwordLength">
   </mat-slider>
@@ -9,13 +18,14 @@
       <input
         type="number"
         id="number"
-        min="50"
+        min="20"
         max="1000"
         class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-30 text-center"
         placeholder="Ingresa un número"
         [(ngModel)]="passwordLength"
-        oninput="if (this.value > 1000) this.value = 1000"
-      />
+        oninput="if (this.value > 1000) this.value = 1000;
+            if (this.value < 0) this.value = Math.abs(this.value);
+            if (this.value === 0) this.value = 0;"/>
     </div>
     <button type="submit" (click)="callGenerator()" [disabled]="charging" [style.cursor]="charging ? 'wait' : 'pointer'"
             class="flex w-40 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm
