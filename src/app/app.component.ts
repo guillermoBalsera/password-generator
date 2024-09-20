@@ -9,26 +9,37 @@ import {ClipboardService} from "./services/clipboard/clipboard.service";
 })
 export class AppComponent implements OnInit {
 
-  public passwordLength: number = 10;
-  public showPassword: boolean = true;
+  public passwordLength: number = 20;
   public password: string = 'passwordGenerator';
 
-  constructor(private generator: GeneratorService, protected clipboard: ClipboardService) { }
+  public btnText: string = 'Copiar';
+  public copied: boolean = false;
 
-  public callGenerator(): void {
-    this.password = this.generator.generate(this.passwordLength);
+  constructor(private generator: GeneratorService, protected clipboard: ClipboardService) {
+  }
+
+  public async callGenerator(): Promise<void> {
+    this.password = await this.generator.generate(this.passwordLength);
   }
 
   ngOnInit(): void {
-    this.callGenerator()
+    this.callGenerator().then((): void => {
+      console.log(this.password)
+    })
   }
 
   formatLabel(value: number): string {
     return `${value}`;
   }
 
-  generateHiddenPassword(): string {
-    return '*'.repeat(Math.floor(this.password.length));
+  public copyPassword(): void {
+    this.clipboard.write(this.password);
+    this.btnText = 'Copiado';
+    this.copied = true;
+    setTimeout(() => {
+      this.copied = false;
+      this.btnText = 'Copiar';
+    }, 2000);
   }
 
 }

@@ -23,7 +23,30 @@
   align-items: center;
   flex-wrap: wrap;
   align-content: space-around;
-  width: 35%;
+  width: 54%;
+}
+
+.button-divider {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 60%;
+}
+
+.password {
+  padding: 25px;
+  background-color: #4F46E5;
+  border: 0 solid black;
+  color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  height: 30vh;
+  width: 52vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 mat-slider {

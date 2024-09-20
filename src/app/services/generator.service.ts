@@ -1,39 +1,46 @@
 import {Injectable} from '@angular/core';
+import {WordsService} from "./words/words.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeneratorService {
-
   private password: string = '';
 
-  constructor() { }
+  constructor(private words: WordsService) {
+  }
 
-  public generate(length: number): string {
+  public async generate(length: number): Promise<string> {
+    length = Math.max(0, Math.min(length, 1000));
     this.password = '';
+
     for (let i: number = 0; i < length; i++) {
-      this.password += this.getChar();
+      this.password += await this.getChar();
     }
-    console.log(`Generated password: ${this.password}`);
+
     return this.password;
   }
 
-  private getChar(): any {
-    let type_index: number = Math.floor(Math.random() * 4);
+  private async getChar(): Promise<string> {
+    let type_index: number = Math.floor(Math.random() * 10);
     switch (type_index) {
-      case 0:
-        return this.getRandomNumber();
-      case 1:
+      case 0 | 5 | 6:
+        return this.getRandomNumber(10).toString();
+      case 1 | 7 | 8:
         return this.getRandomLowercaseLetter();
-      case 2:
+      case 2 | 9:
         return this.getRandomUppercaseLetter();
       case 3:
         return this.getRandomSymbol();
+      case 4:
+        return await this.getRandomSpell();
+      default:
+        return '';
     }
   }
 
-  private getRandomNumber(): number {
-    return Math.floor(Math.random() * 10);
+  private getRandomNumber(x: number): number {
+    return Math.floor(Math.random() * x);
   }
 
   private getRandomLowercaseLetter(): string {
@@ -52,4 +59,14 @@ export class GeneratorService {
     return symbols[randomIndex];
   }
 
+  private async getRandomSpell(): Promise<string> {
+    try {
+      const data: any = await this.words.getSpells().toPromise();
+      let index: number = this.getRandomNumber(data.length);
+      return data[index].name.replaceAll(' ', '_');
+    } catch (error) {
+      console.error('Error fetching spells:', error);
+      return '';
+    }
+  }
 }
