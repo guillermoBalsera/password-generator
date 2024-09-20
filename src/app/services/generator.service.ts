@@ -13,7 +13,7 @@ export class GeneratorService {
   constructor(private words: WordsService) { }
 
   public async generate(length: number): Promise<string> {
-    length = Math.max(0, Math.min(length, 2000));
+    length = Math.max(0, Math.min(length, 1000));
     this.password = '';
     let char: string = '';
     for (let i: number = 0; i < length; i += char.length) {
@@ -89,7 +89,7 @@ export class GeneratorService {
       let index: number = this.getRandomNumber(data.length);
       return data[index].name.replaceAll(' ', this.getRandomSymbol());
     } catch (error) {
-      console.error('Error fetching spells:', error);
+      console.error('Error fetching spells');
       return '';
     }
   }

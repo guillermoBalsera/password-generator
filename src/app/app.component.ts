@@ -9,12 +9,12 @@ import {ClipboardService} from "./services/clipboard/clipboard.service";
 })
 export class AppComponent implements OnInit {
 
-  public passwordLength: number = 50;
+  public passwordLength: number = 100;
   public password: string = '';
 
   public charging: boolean = false;
 
-  public btnText: string = 'Copiar';
+  public btnText: string = 'Copy';
   public copied: boolean = false;
 
   constructor(private generator: GeneratorService, protected clipboard: ClipboardService) {
@@ -36,11 +36,11 @@ export class AppComponent implements OnInit {
 
   public copyPassword(): void {
     this.clipboard.write(this.password);
-    this.btnText = 'Copiado';
+    this.btnText = 'Copied';
     this.copied = true;
     setTimeout(() => {
       this.copied = false;
-      this.btnText = 'Copiar';
+      this.btnText = 'Copy';
     }, 1000);
   }
 
