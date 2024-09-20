@@ -52,12 +52,12 @@ export class GeneratorService {
         return this.getRandomUppercaseLetter();
       case 18:
         return this.getRandomSymbol();
-      case 19:
-        return await this.getRandomSpell();
-      case 20:
-        return await this.getVerse();
-      case 21:
-        return await this.getCat();
+      // case 19:
+      //   return await this.getRandomSpell();
+      // case 20:
+      //   return await this.getVerse();
+      // case 21:
+      //   return await this.getCat();
       default:
         return '';
     }
