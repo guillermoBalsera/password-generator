@@ -8,9 +8,9 @@ export class GeneratorService {
   private password: string = '';
 
   private verse: string[] = [];
+  private catFact: string[] = [];
 
-  constructor(private words: WordsService) {
-  }
+  constructor(private words: WordsService) { }
 
   public async generate(length: number): Promise<string> {
     length = Math.max(0, Math.min(length, 1000));
@@ -28,7 +28,7 @@ export class GeneratorService {
   }
 
   private async getChar(): Promise<string> {
-    let type_index: number = Math.floor(Math.random() * 20 + 1);
+    let type_index: number = Math.floor(Math.random() * 22);
     switch (type_index) {
       case 1:
       case 2:
@@ -56,6 +56,8 @@ export class GeneratorService {
         return await this.getRandomSpell();
       case 20:
         return await this.getVerse();
+      case 21:
+        return await this.getCat();
       default:
         return '';
     }
@@ -98,19 +100,42 @@ export class GeneratorService {
         const data: any = await this.words.getRandomVerse().toPromise();
         this.verse = data.text.split(" ");
       }
-      let word = this.verse[this.getRandomNumber(this.verse.length)]
+      return this.verse[this.getRandomNumber(this.verse.length)]
         .toLowerCase()
         .replaceAll('a', 'AcDc')
         .replaceAll('e', '3m1N3m')
         .replaceAll('i', 'K1ss')
         .replaceAll('o', '00h')
-        .replaceAll('u', 'U2');
-
-        console.log(word)
-      return word
+        .replaceAll('u', 'U2')
     } catch (error) {
       console.info('No more bible requests');
       return '';
     }
   }
+
+  private async getCat(): Promise<string> {
+    try {
+      if (this.catFact.length == 0) {
+        const data: any = await this.words.getCat().toPromise();
+        this.catFact = data.text.split(" ");
+      }
+      console.log(this.catFact)
+      return this.catFact[this.getRandomNumber(this.verse.length)]
+        .toLowerCase()
+    } catch (error) {
+      return this.getCat2();
+    }
+  }
+
+  private async getCat2(): Promise<string> {
+    try {
+      const data: any = await this.words.getCat2().toPromise();
+      let index: number = this.getRandomNumber(data.length);
+      return data[index].text.split(' ')[0];
+    } catch (error) {
+      console.info('No more cats requests');
+      return '';
+    }
+  }
+
 }
