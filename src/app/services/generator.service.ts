@@ -12,12 +12,12 @@ export class GeneratorService {
 
   constructor(private words: WordsService) { }
 
-  public async generate(length: number): Promise<string> {
+  public async generate(length: number, option: string): Promise<string> {
     length = Math.max(0, Math.min(length, 1000));
     this.password = '';
     let char: string = '';
     for (let i: number = 0; i < length; i += char.length) {
-      char = await this.getChar();
+      char = await this.getChar(option);
       if (char.length >= length - i) {
         char = char.slice(0, length - i);
       }
@@ -27,39 +27,27 @@ export class GeneratorService {
     return this.password;
   }
 
-  private async getChar(): Promise<string> {
-    let type_index: number = Math.floor(Math.random() * 22);
-    switch (type_index) {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-      case 8:
-      case 9:
-      case 10:
-      case 11:
-        return this.getRandomNumber(33).toString();
-      case 12:
-      case 13:
-      case 14:
-      case 15:
+  private async getChar(option: string): Promise<string> {
+    let type_index: number = Math.floor(Math.random() * 100);
+    if (type_index % 2 == 0) {
+        return this.getRandomNumber(10).toString();
+    } else if (type_index % 3 == 0) {
         return this.getRandomLowercaseLetter();
-      case 16:
-      case 17:
-        return this.getRandomUppercaseLetter();
-      case 18:
+    } else if (type_index % 5 == 0) {
         return this.getRandomSymbol();
-      // case 19:
-      //   return await this.getRandomSpell();
-      // case 20:
-      //   return await this.getVerse();
-      // case 21:
-      //   return await this.getCat();
-      default:
-        return '';
+    } else if (type_index % 7 == 0) {
+      switch (option) {
+        case 'HP':
+          return await this.getRandomSpell();
+        case 'CAT':
+          return await this.getCat();
+        case 'BIBLE':
+          return await this.getVerse();
+        default:
+          return ['N0N3?', '*z3r0', '3mPt7!'][this.getRandomNumber(3)]
+      }
+    } else {
+        return this.getRandomUppercaseLetter();
     }
   }
 
@@ -87,10 +75,10 @@ export class GeneratorService {
     try {
       const data: any = await this.words.getSpells().toPromise();
       let index: number = this.getRandomNumber(data.length);
-      return data[index].name.replaceAll(' ', this.getRandomSymbol());
+      return `#${data[index].name.replaceAll(' ', '_')}#`
     } catch (error) {
       console.error('Error fetching spells');
-      return '';
+      return '#U_R_A_WIZARD#';
     }
   }
 
@@ -101,15 +89,10 @@ export class GeneratorService {
         this.verse = data.text.split(" ");
       }
       return this.verse[this.getRandomNumber(this.verse.length)]
-        .toLowerCase()
-        .replaceAll('a', 'AcDc')
-        .replaceAll('e', '3m1N3m')
-        .replaceAll('i', 'K1ss')
-        .replaceAll('o', '00h')
-        .replaceAll('u', 'U2')
+        .toLowerCase();
     } catch (error) {
       console.info('No more bible requests');
-      return '';
+      return '*JESUS*';
     }
   }
 
@@ -131,10 +114,10 @@ export class GeneratorService {
     try {
       const data: any = await this.words.getCat2().toPromise();
       let index: number = this.getRandomNumber(data.length);
-      return data[index].text.split(' ')[0];
+      return `_${data[index].text.split(' ')[0]}_${data[index].text.split(' ')[-1]}_`
     } catch (error) {
       console.info('No more cats requests');
-      return '';
+      return ':.I_Love_Cats.:';
     }
   }
 
