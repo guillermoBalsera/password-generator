@@ -13,7 +13,7 @@ export class GeneratorService {
   constructor(private words: WordsService) { }
 
   public async generate(length: number): Promise<string> {
-    length = Math.max(0, Math.min(length, 1000));
+    length = Math.max(0, Math.min(length, 2000));
     this.password = '';
     let char: string = '';
     for (let i: number = 0; i < length; i += char.length) {
