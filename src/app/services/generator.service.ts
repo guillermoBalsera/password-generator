@@ -10,7 +10,8 @@ export class GeneratorService {
   private verse: string[] = [];
   private catFact: string[] = [];
 
-  constructor(private words: WordsService) { }
+  constructor(private words: WordsService) {
+  }
 
   public async generate(length: number, option: string): Promise<string> {
     length = Math.max(0, Math.min(length, 1000));
@@ -23,31 +24,30 @@ export class GeneratorService {
       }
       this.password += char;
     }
-    console.log(`Generated password: ${this.password}`)
-    return this.password;
+    return this.password.trim().replaceAll(' ', '');
   }
 
   private async getChar(option: string): Promise<string> {
     let type_index: number = Math.floor(Math.random() * 100);
     if (type_index % 2 == 0) {
-        return this.getRandomNumber(10).toString();
+      return this.getRandomNumber(10).toString();
     } else if (type_index % 3 == 0) {
-        return this.getRandomLowercaseLetter();
+      return this.getRandomLowercaseLetter();
     } else if (type_index % 5 == 0) {
-        return this.getRandomSymbol();
+      return this.getRandomSymbol();
     } else if (type_index % 7 == 0) {
       switch (option) {
-        case 'HP':
+        case 'Magic':
           return await this.getRandomSpell();
-        case 'CAT':
+        case 'Cats':
           return await this.getCat();
-        case 'BIBLE':
+        case 'Bible':
           return await this.getVerse();
         default:
           return ['N0N3?', '*z3r0', '3mPt7!'][this.getRandomNumber(3)]
       }
     } else {
-        return this.getRandomUppercaseLetter();
+      return this.getRandomUppercaseLetter();
     }
   }
 
@@ -75,7 +75,11 @@ export class GeneratorService {
     try {
       const data: any = await this.words.getSpells().toPromise();
       let index: number = this.getRandomNumber(data.length);
-      return `#${data[index].name.replaceAll(' ', '_')}#`
+      let spell = data[index];
+      if (index % 2 == 0 && spell.incantation != null) {
+        return `!${spell.incantation.replaceAll(' ', '_')}!`
+      }
+      return `#${spell.name.replaceAll(' ', '_')}#`
     } catch (error) {
       console.error('Error fetching spells');
       return '#U_R_A_WIZARD#';
@@ -89,7 +93,7 @@ export class GeneratorService {
         this.verse = data.text.split(" ");
       }
       return this.verse[this.getRandomNumber(this.verse.length)]
-        .toLowerCase();
+        .replaceAll(' ', '_').trim().toLowerCase();
     } catch (error) {
       console.info('No more bible requests');
       return '*JESUS*';
@@ -106,6 +110,7 @@ export class GeneratorService {
       return this.catFact[this.getRandomNumber(this.verse.length)]
         .toLowerCase()
     } catch (error) {
+      console.info('No more cats requests (1)');
       return this.getCat2();
     }
   }
@@ -114,10 +119,10 @@ export class GeneratorService {
     try {
       const data: any = await this.words.getCat2().toPromise();
       let index: number = this.getRandomNumber(data.length);
-      return `_${data[index].text.split(' ')[0]}_${data[index].text.split(' ')[-1]}_`
+      return `_${data[index].text.split(' ')[0]}_${data[-1].text.split(' ')[0]}_`
     } catch (error) {
-      console.info('No more cats requests');
-      return ':.I_Love_Cats.:';
+      console.info('No more cats requests (2)');
+      return ['.I_Love_Cats.', '_PrRrRrRr_', 'Aegean', 'Bambino', 'Bombay', 'LaPerm', 'Pixie-bob'][this.getRandomNumber(7)]
     }
   }
 

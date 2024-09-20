@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   public password: string = '';
 
   public charging: boolean = false;
-  public option: string = 'NONE';
+  public option: string = 'Generic';
 
   public btnText: string = 'Copy';
   public copied: boolean = false;
