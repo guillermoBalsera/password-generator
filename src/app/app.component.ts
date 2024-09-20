@@ -9,8 +9,10 @@ import {ClipboardService} from "./services/clipboard/clipboard.service";
 })
 export class AppComponent implements OnInit {
 
-  public passwordLength: number = 20;
-  public password: string = 'passwordGenerator';
+  public passwordLength: number = 50;
+  public password: string = '';
+
+  public charging: boolean = false;
 
   public btnText: string = 'Copiar';
   public copied: boolean = false;
@@ -19,13 +21,13 @@ export class AppComponent implements OnInit {
   }
 
   public async callGenerator(): Promise<void> {
+    this.charging = true;
     this.password = await this.generator.generate(this.passwordLength);
+    this.charging = false;
   }
 
   ngOnInit(): void {
-    this.callGenerator().then((): void => {
-      console.log(this.password)
-    })
+    this.callGenerator().then((): void => { });
   }
 
   formatLabel(value: number): string {
@@ -39,7 +41,7 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.copied = false;
       this.btnText = 'Copiar';
-    }, 2000);
+    }, 1000);
   }
 
 }

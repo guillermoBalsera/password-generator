@@ -1,7 +1,7 @@
 <div class="card break-all">
   <!-- #4F46e5 -->
     <p class="password"> {{ password }} </p>
-  <mat-slider min="10" [color]="" max="1000" step="10" discrete [displayWith]="formatLabel" style="color: #4F46E5;">
+  <mat-slider min="20" [color]="" max="1000" step="10" discrete [displayWith]="formatLabel" style="color: #4F46E5;">
     <input matSliderThumb [(ngModel)]="passwordLength">
   </mat-slider>
   <div class="button-container">
@@ -9,7 +9,7 @@
       <input
         type="number"
         id="number"
-        min="0"
+        min="50"
         max="1000"
         class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-30 text-center"
         placeholder="Ingresa un número"
@@ -17,7 +17,7 @@
         oninput="if (this.value > 1000) this.value = 1000"
       />
     </div>
-    <button type="submit" (click)="callGenerator()"
+    <button type="submit" (click)="callGenerator()" [disabled]="charging" [style.cursor]="charging ? 'wait' : 'pointer'"
             class="flex w-40 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm
            leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2
            focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
